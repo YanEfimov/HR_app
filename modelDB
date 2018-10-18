@@ -1,0 +1,121 @@
+drop database if exists hr_department;
+create database hr_department default character set 'utf8';
+
+use hr_department;
+
+create table user(
+user_id int not null auto_increment,
+email varchar(100) not null,
+password varchar(255) not null,
+name varchar(255) not null,
+surname varchar(255) not null,
+userState enum('manager','developer'),
+primary key(user_id)
+)engine=InnoDB;
+
+create table candidate(
+candidate_id int not null auto_increment,
+name varchar(255) not null,
+surname varchar(255) not null,
+birthday date not null,
+salary decimal(10,2) not null,
+candidatestate varchar(255) not null,
+primary key(candidate_id)
+)engine=InnoDB;
+
+create table skill(
+name varchar(255) not null,
+primary key(name)
+)engine=InnoDB;
+
+create table vacancy(
+vacancy_id int not null auto_increment,
+position varchar(1000) not null,
+salaryfrom decimal(10,2) not null,
+salaryto decimal(10,2) not null,
+vacancystate enum('active','passive'),
+experienceYearRequire decimal(10,2) not null, 
+idDeveloper int(11),
+primary key(vacancy_id),
+foreign key(idDeveloper) references user(user_id)
+)engine=InnoDB;
+
+create table interview(
+interview_id int not null auto_increment,
+idVacancy int(11),
+planDate date not null,
+idCandidate int(11),
+factDate date not null,
+primary key(interview_id),
+foreign key(idVacancy) references vacancy(vacancy_id),
+foreign key(idCandidate) references candidate(candidate_id)
+)engine=InnoDB;
+
+create table feedback(
+feedback_id int not null auto_increment,
+idInterview int(11),
+idInterviewer int(11),
+fedbackState varchar(255) not null,
+reason varchar(4000) not null,
+primary key(feedback_id),
+foreign key(idInterview) references interview(interview_id),
+foreign key(idInterviewer) references user(user_id)
+)engine=InnoDB;
+
+create table candidatecompetence(
+id int(11) not null auto_increment,
+idCandidate int(11),
+skill varchar(255),
+primary key(id),
+foreign key(idCandidate) references candidate(candidate_id),
+foreign key(skill) references skill(name)
+)engine=InnoDB;
+
+create table vacancyrequirement(
+id int(11) not null auto_increment,
+idVacancy int(11),
+skill varchar(255),
+primary key(id),
+foreign key(idVacancy) references vacancy(vacancy_id),
+foreign key(skill) references skill(name)
+)engine=InnoDB;
+
+create table vacancycandidates(
+id int(11) not null auto_increment,
+idVacancy int(11),
+idCandidate int(11),
+suitableState varchar(255),
+reason varchar(1000),
+primary key(id),
+foreign key(idVacancy) references vacancy(vacancy_id),
+foreign key(idCandidate) references candidate(candidate_id)
+)engine=InnoDB;
+
+create table attachment(
+id int(11) not null auto_increment,
+idCandidate int(11) not null,
+filepath varchar(1000) not null,
+primary key(id),
+foreign key(idCandidate) references candidate(candidate_id)
+)engine=InnoDB;
+
+create table canditateexperience(
+id int(11) not null auto_increment,
+idCandidate int(11) not null,
+dateForm date not null,
+dateTo date not null,
+jobDescription varchar(4000),
+jobPosition varchar(1000),
+companyName varchar(1000),
+primary key(id),
+foreign key(idCandidate) references candidate(candidate_id)
+)engine=InnoDB;
+
+create table contactdetails(
+id int(11) not null auto_increment,
+idCandidate int(11) not null,
+contactType enum('telephone','email','address'),
+contactDetalis varchar(1000),
+primary key(id),
+foreign key(idCandidate) references candidate(candidate_id)
+)engine=InnoDB; 
