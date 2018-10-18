@@ -19,14 +19,14 @@ userState enum('active','passive'),
 primary key(id)
 )engine=InnoDB;
 
-create table userroles(
+create table user_role(
 idUser int(11) not null,
 idRole int(11) not null,
 foreign key(idUser) references user(id),
 foreign key(idRole) references role(id)
 )engine=InnoDB;
 
-create table candidatestate(
+create table candidate_state(
 name varchar(255) not null,
 primary key(name)
 )engine=InnoDB;
@@ -70,12 +70,12 @@ foreign key(idVacancy) references vacancy(id),
 foreign key(idCandidate) references candidate(id)
 )engine=InnoDB;
 
-create table feedbackstate(
+create table feedback_state(
 name varchar(255) not null,
 primary key(name)
 )engine=InnoDB;
 
-create table interviewfeedback(
+create table interview_feedback(
 idInterview int(11),
 idInterviewer int(11),
 feedbackState varchar(255) not null,
@@ -85,26 +85,26 @@ foreign key(idInterviewer) references user(id),
 foreign key(feedbackState) references feedbackstate(name)
 )engine=InnoDB;
 
-create table candidatecompetence(
+create table candidate_competence(
 idCandidate int(11),
 skill varchar(255),
 foreign key(idCandidate) references candidate(id),
 foreign key(skill) references skill(name)
 )engine=InnoDB;
 
-create table vacancyrequirement(
+create table vacancy_requirement(
 idVacancy int(11),
 skill varchar(255),
 foreign key(idVacancy) references vacancy(id),
 foreign key(skill) references skill(name)
 )engine=InnoDB;
 
-create table suitablestate(
+create table suitable_state(
 name varchar(255) not null,
 primary key(name)
 )engine=InnoDB;
 
-create table vacancycandidates(
+create table vacancy_candidates(
 idVacancy int(11),
 idCandidate int(11),
 suitableState varchar(255),
@@ -121,7 +121,7 @@ filepath varchar(1000) not null,
 foreign key(idCandidate) references candidate(id)
 )engine=InnoDB;
 
-create table canditateexperience(
+create table canditate_experience(
 idCandidate int(11) not null,
 dateForm date not null,
 dateTo date not null,
@@ -131,7 +131,7 @@ companyName varchar(1000),
 foreign key(idCandidate) references candidate(id)
 )engine=InnoDB;
 
-create table contactdetails(
+create table contact_details(
 idCandidate int(11) not null,
 contactType enum('telephone','email','address'),
 contactDetalis varchar(1000),
